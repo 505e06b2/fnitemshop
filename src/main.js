@@ -1,6 +1,5 @@
 "use strict";
 
-import { registerRootComponent } from "expo";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -9,7 +8,7 @@ import ItemShop from "./item_shop";
 
 const Stack = createNativeStackNavigator();
 
-function main() {
+export default function main() {
 	const theme = Theme.systemTheme();
 	const header_stylesheet = Theme.getHeaderStylesheet(theme);
 	return (
@@ -20,5 +19,3 @@ function main() {
 		</NavigationContainer>
 	);
 }
-
-registerRootComponent(main);
