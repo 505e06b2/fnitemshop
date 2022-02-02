@@ -1,6 +1,7 @@
 "use strict";
 
 import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
 import { StyleSheet, Text, SafeAreaView, View, Image, FlatList, useWindowDimensions } from "react-native";
 import { useState, useEffect } from "react";
 
@@ -30,9 +31,9 @@ const styles = StyleSheet.create({
 		marginTop: "auto",
 		textAlign: "center",
 		color: "white",
-		fontWeight: "bold",
 		fontSize: 24,
-		backgroundColor: "rgba(0, 0, 0, 0.3)"
+		backgroundColor: "rgba(0, 0, 0, 0.3)",
+		fontFamily: "FNFont"
 	},
 
 	iconImage: {
@@ -68,6 +69,9 @@ const series_colours = {
 };
 
 export default function Screen() {
+	const [fontsLoaded] = useFonts({
+		"FNFont": require("../assets/fonts/BurbankBigCondensed-Black.otf"),
+	});
 	const theme = Theme.systemTheme();
 	const { height, width } = useWindowDimensions();
 
@@ -84,7 +88,7 @@ export default function Screen() {
 	const image_size = (width / 2) - (margin_size * 2);
 
 	return (
-		items ? (
+		fontsLoaded && items ? (
 			<SafeAreaView style={Theme.getStylesheet(theme)}>
 				<StatusBar style={Theme.getStatusBarTheme(theme)}/>
 				<FlatList

@@ -1,7 +1,7 @@
 "use strict";
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import * as Theme from "./theme";
 import ItemShop from "./item_shop";
