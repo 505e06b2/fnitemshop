@@ -115,7 +115,7 @@ export default function Screen() {
 										}
 									]}/>
 								</View>
-								<Text numberOfLines={1} adjustsFontSizeToFit={true} style={styles.iconText}>{item.displayName}</Text>
+								<Text numberOfLines={1} adjustsFontSizeToFit={true} style={styles.iconText}>{item.displayName.toUpperCase()}</Text>
 							</View>
 						</View>
 					)}
