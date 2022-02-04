@@ -5,8 +5,8 @@ import { useFonts } from "expo-font";
 import { StyleSheet, Text, SafeAreaView, View, Image, FlatList, useWindowDimensions } from "react-native";
 import { useState, useEffect } from "react";
 
-import FortniteAPI from "./fortnite_api";
-import * as Theme from "./theme";
+import FortniteAPI from "../fortnite_api";
+import * as Theme from "../theme";
 
 const api = new FortniteAPI("bffa4ca4-838726ea-1038cb50-5815af17");
 
@@ -70,7 +70,7 @@ const series_colours = {
 
 export default function Screen() {
 	const [fontsLoaded] = useFonts({
-		"FNFont": require("../assets/fonts/BurbankBigCondensed-Black.otf"),
+		"FNFont": require("../../assets/fonts/BurbankBigCondensed-Black.otf"),
 	});
 	const theme = Theme.systemTheme();
 	const { height, width } = useWindowDimensions();
@@ -87,6 +87,28 @@ export default function Screen() {
 	const margin_size = 10;
 	const image_size = (width / 2) - (margin_size * 2);
 
+	const renderItem = ({item}) => (
+		<View style={[styles.iconContainer, {width: image_size, height: image_size, margin: margin_size}]}>
+			<View style={styles.fillContainer}>
+				<View style={[styles.iconImage, styles.fillContainer]}>
+					<Image source={{uri:item.displayAssets[0].background}} style={[
+						styles.fillContainer,
+						{
+							backgroundColor: item.series ?
+								series_colours[item.series.name
+									.toLowerCase()
+									.replace("series", "")
+									.replace(/ /g, "")
+									.trim()
+								] : rarity_colours[item.rarity.name.toLowerCase()]
+						}
+					]}/>
+				</View>
+				<Text numberOfLines={1} adjustsFontSizeToFit={true} style={styles.iconText}>{item.displayName.toUpperCase()}</Text>
+			</View>
+		</View>
+	);
+
 	return (
 		fontsLoaded && items ? (
 			<SafeAreaView style={Theme.getStylesheet(theme)}>
@@ -98,27 +120,7 @@ export default function Screen() {
 					numColumns={2}
 					maxToRenderPerBatch={2}
 					data={items}
-					renderItem={({item}) => (
-						<View style={[styles.iconContainer, {width: image_size, height: image_size, margin: margin_size}]}>
-							<View style={styles.fillContainer}>
-								<View style={[styles.iconImage, styles.fillContainer]}>
-									<Image source={{uri:item.displayAssets[0].background}} style={[
-										styles.fillContainer,
-										{
-											backgroundColor: item.series ?
-												series_colours[item.series.name
-													.toLowerCase()
-													.replace("series", "")
-													.replace(/ /g, "")
-													.trim()
-												] : rarity_colours[item.rarity.name.toLowerCase()]
-										}
-									]}/>
-								</View>
-								<Text numberOfLines={1} adjustsFontSizeToFit={true} style={styles.iconText}>{item.displayName.toUpperCase()}</Text>
-							</View>
-						</View>
-					)}
+					renderItem={renderItem}
 					keyExtractor={(item, index) => index.toString()}
 				/>
 			</SafeAreaView>

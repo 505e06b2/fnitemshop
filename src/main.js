@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import * as Theme from "./theme";
-import ItemShop from "./item_shop";
+import Shop from "./components/shop";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +20,7 @@ export default function main() {
 				headerStyle: header_stylesheet,
 				contentStyle: page_stylesheet
 			}}>
-				<Stack.Screen name={iso_date} component={ItemShop}/>
+				<Stack.Screen name="shop" component={Shop} options={{title: iso_date}}/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
