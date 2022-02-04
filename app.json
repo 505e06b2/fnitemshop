@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/penny_splash.png",
         "backgroundColor": "#333"
       },
       "package": "live.fivezero.fnitemshop",
