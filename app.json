@@ -4,9 +4,9 @@
     "slug": "react_native",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/penny_splash.png",
     "splash": {
-      "image": "./assets/icon.png",
+      "image": "./assets/penny_splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#336cb9"
     },
