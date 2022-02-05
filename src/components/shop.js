@@ -1,8 +1,14 @@
 "use strict";
 
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, SafeAreaView, View, Image, FlatList, Pressable, useWindowDimensions } from "react-native";
+import { StyleSheet, Text, SafeAreaView, View, Image, FlatList, ToastAndroid, Button, Pressable, useWindowDimensions } from "react-native";
 import { useState, useEffect } from "react";
+import { Ionicons } from "@expo/vector-icons";
+
+/* TODO
+- Refresh button
+- Link to a credits page: use code FNAPI
+*/
 
 const styles = StyleSheet.create({
 	container: {
@@ -35,6 +41,12 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		left: 0,
 		top: 0
+	},
+
+	header_icon: {
+		alignItems: "flex-end",
+		justifyContent: "flex-end",
+		width: 48
 	}
 });
 
@@ -43,23 +55,53 @@ function getIsoDate(date) {
 }
 
 export default function Screen({route, navigation}) {
-	const Fortnite = global.Fortnite;
-	const Theme = global.Theme;
-
 	const theme = Theme.systemTheme();
 	const { height, width } = useWindowDimensions();
 
 	const [shop, setShop] = useState();
 
-	useEffect(() => {
-		(async () => {
-			const response = await Fortnite.itemShop();
-			global.last_item_shop_response = response;
-			const title = `${getIsoDate(new Date(response.lastUpdate.date))} (${response.shop.length} items)`;
-			navigation.setOptions({title: title});
-			setShop(response);
-		})();
-	}, []);
+	const refreshItemShop = async () => {
+		const icon_ellipsis = (
+			<Pressable style={styles.header_icon} onPress={() => alert("check")}>
+				<Ionicons name="md-ellipsis-vertical" size={32} color={theme.header_stylesheet.color}/>
+			</Pressable>
+		);
+
+		const icon_refresh = (
+			<Pressable style={styles.header_icon} onPress={() => {
+				ToastAndroid.show("Updating Item Shop", ToastAndroid.SHORT);
+				refreshItemShop();
+			}}>
+				<Ionicons name="md-refresh" size={32} color={theme.header_stylesheet.color}/>
+			</Pressable>
+		);
+
+		setShop(undefined);
+		navigation.setOptions({
+			title: "",
+			headerRight: () => (
+				<View style={{flexDirection:"row"}}>
+					{icon_ellipsis}
+				</View>
+			),
+		});
+
+		const response = await Fortnite.itemShop();
+		global.last_item_shop_response = response;
+		const title = `${getIsoDate(new Date(response.lastUpdate.date))} (${response.shop.length} items)`;
+		navigation.setOptions({
+			title: title,
+			headerRight: () => (
+				<View style={{flexDirection:"row"}}>
+					{icon_refresh}
+					{icon_ellipsis}
+				</View>
+			),
+		});
+		setShop(response);
+	};
+
+	useEffect(() => refreshItemShop(), []);
 
 	const margin_size = 10;
 	const image_size = (width / 2) - (margin_size * 2);

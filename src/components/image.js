@@ -4,6 +4,9 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, Image } from "react-native";
 import { useState, useEffect } from "react";
 
+/* TODO
+- Save button
+*/
 
 const styles = StyleSheet.create({
 	image: {

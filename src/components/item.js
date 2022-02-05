@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
 });
 
 export default function Screen({route, navigation}) {
-	const fortnite = global.Fortnite;
 	const item_data = Fortnite.known_items[route.params.item_id];
 	const item_name = item_data.displayName.trim().toUpperCase();
 
