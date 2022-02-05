@@ -11,26 +11,27 @@ const styles = StyleSheet.create({
 		justifyContent: "center"
 	},
 
-	iconContainer: {
+	icon_container: {
 		alignItems: "center",
 		justifyContent: "center"
 	},
 
-	fillContainer: {
+	fill_container: {
 		width: "100%",
 		height: "100%"
 	},
 
-	iconText: {
+	icon_text: {
 		marginTop: "auto",
 		textAlign: "center",
 		color: "white",
 		fontSize: 24,
 		backgroundColor: "rgba(0, 0, 0, 0.3)",
-		fontFamily: "FNFont"
+		fontFamily: "FNFont",
+		marginBottom: 5
 	},
 
-	iconImage: {
+	icon_image: {
 		position: "absolute",
 		left: 0,
 		top: 0
@@ -64,18 +65,19 @@ export default function Screen({route, navigation}) {
 	const image_size = (width / 2) - (margin_size * 2);
 
 	const renderItem = ({item}) => {
-		const bg_colour = item.series ? Fortnite.getSeriesColour(item.series.name) : Fortnite.getRarityColour(item.rarity.name);
+		const bg_colour = Fortnite.getRarityColour(item.rarity.name);
 		return (
-			<View style={[styles.iconContainer, {width: image_size, height: image_size, margin: margin_size}]}>
-				<Pressable style={styles.fillContainer} onPress={() => navigation.navigate("item", {item_id: item.mainId})}>
-					<View style={styles.fillContainer}>
-						<View style={[styles.iconImage, styles.fillContainer]}>
-							<Image source={{uri:item.displayAssets[0].background}} style={[
-								styles.fillContainer,
-								{backgroundColor: bg_colour}
-							]}/>
+			<View style={[styles.icon_container, {width: image_size, height: image_size, margin: margin_size}]}>
+				<Pressable style={styles.fill_container} onPress={() => navigation.navigate("item", {item_id: item.mainId})}>
+					<View style={styles.fill_container}>
+						<View style={[
+							styles.icon_image,
+							styles.fill_container,
+							{backgroundColor: bg_colour, paddingBottom:5}
+						]}>
+							<Image source={{uri: item.displayAssets[0].background}} style={[styles.fill_container]}/>
 						</View>
-						<Text numberOfLines={1} adjustsFontSizeToFit={true} style={styles.iconText}>{item.displayName.toUpperCase()}</Text>
+						<Text numberOfLines={1} adjustsFontSizeToFit={true} style={styles.icon_text}>{item.displayName.toUpperCase()}</Text>
 					</View>
 				</Pressable>
 			</View>
@@ -84,10 +86,10 @@ export default function Screen({route, navigation}) {
 
 	return (
 		shop ? (
-			<SafeAreaView style={Theme.getStylesheet(theme)}>
-				<StatusBar style={Theme.getStatusBarTheme(theme)}/>
+			<SafeAreaView style={theme.stylesheet}>
+				<StatusBar style={theme.statusbar_theme}/>
 				<FlatList
-					style={Theme.getStylesheet(theme)}
+					style={theme.stylesheet}
 					initialNumToRender={8}
 					numColumns={2}
 					maxToRenderPerBatch={8}
@@ -97,9 +99,9 @@ export default function Screen({route, navigation}) {
 				/>
 			</SafeAreaView>
 		) : (
-			<View style={[styles.container, Theme.getStylesheet(theme)]}>
-				<StatusBar style={Theme.getStatusBarTheme(theme)}/>
-				<Text style={Theme.getStylesheet(theme)}>Getting Item Shop Data...</Text>
+			<View style={[styles.container, theme.stylesheet]}>
+				<StatusBar style={theme.statusbar_theme}/>
+				<Text style={theme.stylesheet}>Getting Item Shop Data...</Text>
 			</View>
 		)
 	);

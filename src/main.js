@@ -18,18 +18,15 @@ export default function main() {
 	});
 
 	const theme = Theme.systemTheme();
-	const header_stylesheet = Theme.getHeaderStylesheet(theme);
-	const page_stylesheet = Theme.getStylesheet(theme);
-	const tint_colour = Theme.getTintColour(theme);
 
 	return fontsLoaded ? (
-		<View style={[{flex: 1}, Theme.getStylesheet(theme)]}>
+		<View style={[{flex: 1}, theme.stylesheet]}>
 			<NavigationContainer>
 				<Stack.Navigator screenOptions={{
-					headerTitleStyle: header_stylesheet,
-					headerTintColor: tint_colour,
-					headerStyle: header_stylesheet,
-					contentStyle: page_stylesheet
+					headerTitleStyle: theme.header_stylesheet,
+					headerTintColor: theme.tint_colour,
+					headerStyle: theme.header_stylesheet,
+					contentStyle: theme.stylesheet
 				}}>
 					<Stack.Screen
 						name="shop"
@@ -40,6 +37,11 @@ export default function main() {
 						name="item"
 						getComponent={() => require("./components/item").default}
 						options={{title: "ITEM"}}
+					/>
+					<Stack.Screen
+						name="image"
+						getComponent={() => require("./components/image").default}
+						options={{title: "IMAGE"}}
 					/>
 				</Stack.Navigator>
 			</NavigationContainer>
