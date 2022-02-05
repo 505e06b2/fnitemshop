@@ -54,7 +54,23 @@ export default function Screen({route, navigation}) {
 	const margin_size = 10;
 	const image_size = (width/2) - (margin_size * 2);
 
-	const renderItem = ({item}) => {
+	const above_flatlist = () => (
+		<View>
+			<View style={[styles.name_container, {borderBottomColor: separator_color}]}>
+				<Text numberOfLines={1} adjustsFontSizeToFit={true} style={[styles.name_text, {color: theme.stylesheet.color}]}>{item_data.displayName.toUpperCase()}</Text>
+				{item_data.displayDescription ? <Text style={[text_stylesheet, {textAlign: "center"}]}>{item_data.displayDescription}</Text> : null}
+			</View>
+			<View style={[styles.name_container, {borderBottomColor: separator_color}]}>
+				<Text style={text_stylesheet}>Rarity: {item_data.rarity.name}</Text>
+				<Text style={text_stylesheet}>Price: {item_data.price.finalPrice}v</Text>
+				{item_data.series ? <Text style={text_stylesheet}>Series: {item_data.series.name}</Text> : null}
+				<Text style={text_stylesheet}>First Seen: {item_data.firstReleaseDate} ({daysAgo(item_data.firstReleaseDate)} days ago)</Text>
+				{item_data.previousReleaseDate ? <Text style={text_stylesheet}>Last Seen: {item_data.previousReleaseDate} ({daysAgo(item_data.previousReleaseDate)} days ago)</Text> : null}
+			</View>
+		</View>
+	);
+
+	const render_item = ({item}) => {
 		return (
 			<View style={[styles.icon_container, {width: image_size, height: image_size, margin: margin_size}]}>
 				<Pressable style={styles.fill_container} onPress={() => navigation.navigate("image", {
@@ -82,25 +98,15 @@ export default function Screen({route, navigation}) {
 	};
 
 	return (
-		<SafeAreaView style={theme.stylesheet}>
+		<SafeAreaView style={[theme.stylesheet, {flex: 1}]}>
 			<StatusBar style={theme.statusbar_theme}/>
-			<View style={[styles.name_container, {borderBottomColor: separator_color}]}>
-				<Text numberOfLines={1} adjustsFontSizeToFit={true} style={[styles.name_text, {color: theme.stylesheet.color}]}>{item_data.displayName.toUpperCase()}</Text>
-				{item_data.displayDescription ? <Text style={[text_stylesheet, {textAlign: "center"}]}>{item_data.displayDescription}</Text> : null}
-			</View>
-			<View style={[styles.name_container, {borderBottomColor: separator_color}]}>
-				<Text style={text_stylesheet}>Rarity: {item_data.rarity.name}</Text>
-				<Text style={text_stylesheet}>Price: {item_data.price.finalPrice}v</Text>
-				{item_data.series ? <Text style={text_stylesheet}>Series: {item_data.series.name}</Text> : null}
-				<Text style={text_stylesheet}>First Seen: {item_data.firstReleaseDate} ({daysAgo(item_data.firstReleaseDate)} days ago)</Text>
-				{item_data.previousReleaseDate ? <Text style={text_stylesheet}>Last Seen: {item_data.previousReleaseDate} ({daysAgo(item_data.previousReleaseDate)} days ago)</Text> : null}
-			</View>
 			<FlatList
 				style={theme.stylesheet}
 				initialNumToRender={1}
 				numColumns={2}
 				data={item_data.displayAssets}
-				renderItem={renderItem}
+				ListHeaderComponent={above_flatlist}
+				renderItem={render_item}
 				keyExtractor={(item, index) => index.toString()}
 			/>
 		</SafeAreaView>

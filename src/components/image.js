@@ -1,7 +1,7 @@
 "use strict";
 
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, SafeAreaView, View, Image, FlatList, Pressable, useWindowDimensions } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import { useState, useEffect } from "react";
 
 
@@ -23,10 +23,14 @@ export default function Screen({route, navigation}) {
 
 	return (
 		<View>
-			<Image source={{uri: route.params.url}} style={[
-				styles.image,
-				{backgroundColor: theme.header_stylesheet.backgroundColor}
-			]}/>
+			<Image
+				source={{uri: route.params.url}}
+				style={[
+					styles.image,
+					{backgroundColor: theme.header_stylesheet.backgroundColor}
+				]}
+				resizeMode="contain"
+			/>
 		</View>
 	);
 }

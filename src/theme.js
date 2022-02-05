@@ -3,7 +3,7 @@
 import { StyleSheet, useColorScheme } from "react-native";
 
 export const settings = {
-	force_dark_theme: true //true = dark, false = light, null = use system theme
+	force_dark_theme: null //true = dark, false = light, null = use system theme
 };
 
 export function systemTheme() {
