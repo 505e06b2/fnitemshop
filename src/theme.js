@@ -28,6 +28,10 @@ export function getStatusBarTheme(theme_name="dark") {
 	return theme_name === "light" ? "dark" : "light"; //text opposite of bg
 }
 
+export function getTintColour(theme_name="dark") {
+	return header_theme[theme_name].color;
+}
+
 const content_theme = StyleSheet.create({
 	dark: {
 		color: "#eee",
@@ -41,12 +45,12 @@ const content_theme = StyleSheet.create({
 });
 
 const header_theme = StyleSheet.create({
-	"dark": {
+	dark: {
 		color: "#eee",
 		backgroundColor: "#444",
 	},
 
-	"light": {
+	light: {
 		color: "#000",
 		backgroundColor: "#cff"
 	}
