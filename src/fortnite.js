@@ -1,6 +1,6 @@
 "use strict";
 
-export default function FortniteAPI(api_key, language="en") {
+export default function Fortnite(api_key, language="en") {
 	this.itemShop = async () => await _apiCall("shop");
 
 	const _apiCall = async (endpoint) => {

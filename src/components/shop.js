@@ -1,14 +1,10 @@
 "use strict";
 
 import { StatusBar } from "expo-status-bar";
-import { useFonts } from "expo-font";
 import { StyleSheet, Text, SafeAreaView, View, Image, FlatList, useWindowDimensions } from "react-native";
 import { useState, useEffect } from "react";
 
-import FortniteAPI from "../fortnite_api";
 import * as Theme from "../theme";
-
-const api = new FortniteAPI("bffa4ca4-838726ea-1038cb50-5815af17");
 
 const styles = StyleSheet.create({
 	container: {
@@ -68,19 +64,24 @@ const series_colours = {
 	gaminglegends: "indigo"
 };
 
-export default function Screen() {
-	const [fontsLoaded] = useFonts({
-		"FNFont": require("../../assets/fonts/BurbankBigCondensed-Black.otf"),
-	});
+function getIsoDate(date) {
+	return date.toISOString().split("T")[0];
+}
+
+export default function Screen({route, navigation}) {
+	const fortnite = route.params.fortnite;
+
 	const theme = Theme.systemTheme();
 	const { height, width } = useWindowDimensions();
 
-	const [items, setItems] = useState([]);
+	const [shop, setShop] = useState();
 
 	useEffect(() => {
 		(async () => {
-			const response = await api.itemShop();
-			setItems(response.shop);
+			const response = await fortnite.itemShop();
+			const title = `${getIsoDate(new Date(response.lastUpdate.date))} (${response.shop.length} items)`;
+			navigation.setOptions({title: title});
+			setShop(response);
 		})();
 	}, []);
 
@@ -110,16 +111,15 @@ export default function Screen() {
 	);
 
 	return (
-		fontsLoaded && items ? (
+		shop ? (
 			<SafeAreaView style={Theme.getStylesheet(theme)}>
 				<StatusBar style={Theme.getStatusBarTheme(theme)}/>
 				<FlatList
 					style={Theme.getStylesheet(theme)}
-					removeClippedSubviews={true}
-					initialNumToRender={2}
+					initialNumToRender={8}
 					numColumns={2}
-					maxToRenderPerBatch={2}
-					data={items}
+					maxToRenderPerBatch={8}
+					data={shop.shop}
 					renderItem={renderItem}
 					keyExtractor={(item, index) => index.toString()}
 				/>
