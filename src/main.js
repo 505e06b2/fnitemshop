@@ -8,7 +8,7 @@ import { useFonts } from "expo-font";
 
 const Stack = createNativeStackNavigator();
 
-global.Fortnite = new (require("./fortnite").default)("bffa4ca4-838726ea-1038cb50-5815af17"); //"secret" lel
+global.Fortnite = new (require("./fortnite").default)(require("./fn_key").value);
 global.Theme = require("./theme");
 global.last_item_shop_response = {}; //set in shop.js
 
