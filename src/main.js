@@ -43,6 +43,11 @@ export default function main() {
 						getComponent={() => require("./components/image").default}
 						options={{title: "IMAGE"}}
 					/>
+					<Stack.Screen
+						name="about"
+						getComponent={() => require("./components/about").default}
+						options={{title: "About"}}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		</View>

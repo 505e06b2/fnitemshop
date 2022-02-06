@@ -26,6 +26,7 @@ export default function Screen({route, navigation}) {
 
 	return (
 		<View>
+			<StatusBar style={theme.statusbar_theme}/>
 			<Image
 				source={{uri: route.params.url}}
 				style={[

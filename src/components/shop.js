@@ -1,12 +1,11 @@
 "use strict";
 
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, SafeAreaView, View, Image, FlatList, ToastAndroid, Button, Pressable, useWindowDimensions } from "react-native";
+import { StyleSheet, Text, SafeAreaView, View, Image, FlatList, Button, Pressable, ActivityIndicator, RefreshControl, useWindowDimensions } from "react-native";
 import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 /* TODO
-- Refresh button
 - Link to a credits page: use code FNAPI
 */
 
@@ -47,6 +46,19 @@ const styles = StyleSheet.create({
 		alignItems: "flex-end",
 		justifyContent: "flex-end",
 		width: 48
+	},
+
+	popup_menu: {
+		position: "absolute",
+		right: 0,
+		top: 0,
+		width: 150
+	},
+
+	popup_menu_item: {
+		padding: 10,
+		fontSize: 16,
+		color: "black"
 	}
 });
 
@@ -59,19 +71,17 @@ export default function Screen({route, navigation}) {
 	const { height, width } = useWindowDimensions();
 
 	const [shop, setShop] = useState();
+	const [menu_visibility, setMenuVisibility] = useState(false);
 
 	const refreshItemShop = async () => {
 		const icon_ellipsis = (
-			<Pressable style={styles.header_icon} onPress={() => alert("check")}>
+			<Pressable style={styles.header_icon} onPress={() => setMenuVisibility(menu_visibility ? false : true)}>
 				<Ionicons name="md-ellipsis-vertical" size={32} color={theme.header_stylesheet.color}/>
 			</Pressable>
 		);
 
 		const icon_refresh = (
-			<Pressable style={styles.header_icon} onPress={() => {
-				ToastAndroid.show("Updating Item Shop", ToastAndroid.SHORT);
-				refreshItemShop();
-			}}>
+			<Pressable style={styles.header_icon} onPress={refreshItemShop}>
 				<Ionicons name="md-refresh" size={32} color={theme.header_stylesheet.color}/>
 			</Pressable>
 		);
@@ -106,45 +116,59 @@ export default function Screen({route, navigation}) {
 	const margin_size = 10;
 	const image_size = (width / 2) - (margin_size * 2);
 
-	const renderItem = ({item}) => {
-		const bg_colour = Fortnite.getRarityColour(item.rarity.name);
-		return (
-			<View style={[styles.icon_container, {width: image_size, height: image_size, margin: margin_size}]}>
-				<Pressable style={styles.fill_container} onPress={() => navigation.navigate("item", {item_id: item.mainId})}>
-					<View style={styles.fill_container}>
-						<View style={[
-							styles.icon_image,
-							styles.fill_container,
-							{backgroundColor: bg_colour, paddingBottom:5}
-						]}>
-							<Image source={{uri: item.displayAssets[0].background}} style={[styles.fill_container]}/>
-						</View>
-						<Text numberOfLines={1} adjustsFontSizeToFit={true} style={styles.icon_text}>{item.displayName.toUpperCase()}</Text>
+	const render_item = ({item}) => (
+		<View style={[styles.icon_container, {width: image_size, height: image_size, margin: margin_size}]}>
+			<Pressable style={styles.fill_container} onPress={() => navigation.navigate("item", {item_id: item.mainId})}>
+				<View style={styles.fill_container}>
+					<View style={[
+						styles.icon_image,
+						styles.fill_container,
+						{backgroundColor: Fortnite.getRarityColour(item.rarity.name), paddingBottom: 5}
+					]}>
+						<Image source={{uri: item.displayAssets[0].background}} style={[styles.fill_container]}/>
 					</View>
-				</Pressable>
-			</View>
-		);
-	};
+					<Text numberOfLines={1} adjustsFontSizeToFit={true} style={styles.icon_text}>{item.displayName.toUpperCase()}</Text>
+				</View>
+			</Pressable>
+		</View>
+	);
 
 	return (
-		shop ? (
-			<SafeAreaView style={theme.stylesheet}>
-				<StatusBar style={theme.statusbar_theme}/>
+		<SafeAreaView style={[styles.container, theme.stylesheet]}>
+			<StatusBar style={theme.statusbar_theme}/>
+			{shop ? (
 				<FlatList
+					onTouchStart={() => setMenuVisibility(false)}
 					style={theme.stylesheet}
 					initialNumToRender={8}
 					numColumns={2}
 					maxToRenderPerBatch={8}
 					data={shop.shop}
-					renderItem={renderItem}
+					renderItem={render_item}
+					refreshControl={<RefreshControl onRefresh={refreshItemShop}/>}
 					keyExtractor={(item, index) => index.toString()}
 				/>
-			</SafeAreaView>
-		) : (
-			<View style={[styles.container, theme.stylesheet]}>
-				<StatusBar style={theme.statusbar_theme}/>
-				<Text style={theme.stylesheet}>Getting Item Shop Data...</Text>
-			</View>
-		)
+			) : (
+				<ActivityIndicator size="large" color={theme.stylesheet.color}/>
+			)}
+			{menu_visibility ? (
+				<FlatList
+					style={[styles.popup_menu, theme.header_stylesheet]}
+					numColumns={1}
+					data={[
+						{text: "Settings", onPress: () => alert("Not Implemented", "Pester 505e06b2 to get it made!")},
+						{text: "About", onPress: () => navigation.navigate("about")}
+					]}
+					renderItem={({item}) => (
+						<View style={{borderTopWidth: 1, borderTopColor: theme.header_stylesheet.color}}>
+							<Pressable onPress={() => {setMenuVisibility(false); item.onPress()}}>
+								<Text style={[styles.popup_menu_item, theme.header_stylesheet]}>{item.text}</Text>
+							</Pressable>
+						</View>
+					)}
+					keyExtractor={(item, index) => index.toString()}
+				/>
+			) : null}
+		</SafeAreaView>
 	);
 }

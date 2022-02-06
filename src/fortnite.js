@@ -34,27 +34,25 @@ export default function Fortnite(api_key, language="en") {
 	}
 
 	const _rarity_colours = {
-		handmade: "white",
-		common: "grey",
-		uncommon: "green",
-		rare: "blue",
-		epic: "purple",
-		legendary: "orange",
-		mythic: "gold",
-		exotic: "cyan",
-		transcendent: "lightred"
+		common: "#8d8d8d",
+		uncommon: "#448c1a",
+		rare: "#1f77b5",
+		epic: "#7938b2",
+		legendary: "#a5591f",
+		mythic: "#b78f1d",
+		transcendent: "#00dda8"
 	};
 
 	const _series_colours = {
-		marvel: "darkred",
-		dark: "magenta",
-		dc: "midnightblue",
-		icon: "cyan",
-		frozen: "lightblue",
-		lava: "darkorange",
-		starwars: "yellow",
-		shadow: "black",
-		slurp: "darkcyan",
-		gaminglegends: "indigo"
+		marvel: "#d70204",
+		dark: "#b300a5",
+		dc: "#25344e",
+		icon: "#106a70",
+		frozen: "#6faed6",
+		lava: "#7f2c25",
+		starwars: "477284",
+		shadow: "#212221",
+		slurp: "#03f1ed",
+		gaminglegends: "#622b81"
 	};
 }
